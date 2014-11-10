@@ -1,0 +1,62 @@
+[
+    {
+        "CONSTRAINT_CATALOG": "def",
+        "CONSTRAINT_SCHEMA": "magento",
+        "CONSTRAINT_NAME": "FK_SALES_FLAT_ORDER_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID",
+        "UNIQUE_CONSTRAINT_CATALOG": "def",
+        "UNIQUE_CONSTRAINT_SCHEMA": "magento",
+        "UNIQUE_CONSTRAINT_NAME": "PRIMARY",
+        "MATCH_OPTION": "NONE",
+        "UPDATE_RULE": "CASCADE",
+        "DELETE_RULE": "SET NULL",
+        "TABLE_NAME": "sales_flat_order",
+        "REFERENCED_TABLE_NAME": "customer_entity",
+        "COLUMN_NAME": "customer_id",
+        "REFERENCED_COLUMN_NAME": "entity_id"
+    },
+    {
+        "CONSTRAINT_CATALOG": "def",
+        "CONSTRAINT_SCHEMA": "magento",
+        "CONSTRAINT_NAME": "FK_SALES_FLAT_ORDER_STORE_ID_CORE_STORE_STORE_ID",
+        "UNIQUE_CONSTRAINT_CATALOG": "def",
+        "UNIQUE_CONSTRAINT_SCHEMA": "magento",
+        "UNIQUE_CONSTRAINT_NAME": "PRIMARY",
+        "MATCH_OPTION": "NONE",
+        "UPDATE_RULE": "CASCADE",
+        "DELETE_RULE": "SET NULL",
+        "TABLE_NAME": "sales_flat_order",
+        "REFERENCED_TABLE_NAME": "core_store",
+        "COLUMN_NAME": "store_id",
+        "REFERENCED_COLUMN_NAME": "store_id"
+    },
+    {
+        "CONSTRAINT_CATALOG": "def",
+        "CONSTRAINT_SCHEMA": "magento",
+        "CONSTRAINT_NAME": "FK_SALES_FLAT_ORDER_ITEM_ORDER_ID_SALES_FLAT_ORDER_ENTITY_ID",
+        "UNIQUE_CONSTRAINT_CATALOG": "def",
+        "UNIQUE_CONSTRAINT_SCHEMA": "magento",
+        "UNIQUE_CONSTRAINT_NAME": "PRIMARY",
+        "MATCH_OPTION": "NONE",
+        "UPDATE_RULE": "CASCADE",
+        "DELETE_RULE": "CASCADE",
+        "TABLE_NAME": "sales_flat_order_item",
+        "REFERENCED_TABLE_NAME": "sales_flat_order",
+        "COLUMN_NAME": "order_id",
+        "REFERENCED_COLUMN_NAME": "entity_id"
+    },
+    {
+        "CONSTRAINT_CATALOG": "def",
+        "CONSTRAINT_SCHEMA": "magento",
+        "CONSTRAINT_NAME": "FK_SALES_FLAT_ORDER_ITEM_STORE_ID_CORE_STORE_STORE_ID",
+        "UNIQUE_CONSTRAINT_CATALOG": "def",
+        "UNIQUE_CONSTRAINT_SCHEMA": "magento",
+        "UNIQUE_CONSTRAINT_NAME": "PRIMARY",
+        "MATCH_OPTION": "NONE",
+        "UPDATE_RULE": "CASCADE",
+        "DELETE_RULE": "SET NULL",
+        "TABLE_NAME": "sales_flat_order_item",
+        "REFERENCED_TABLE_NAME": "core_store",
+        "COLUMN_NAME": "store_id",
+        "REFERENCED_COLUMN_NAME": "store_id"
+    }
+]

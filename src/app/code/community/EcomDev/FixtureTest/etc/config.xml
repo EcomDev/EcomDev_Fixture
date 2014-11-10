@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <phpunit>
+        <suite>
+            <modules>
+                <EcomDev_FixtureTest />
+            </modules>
+            <groups>
+                <lib>Lib</lib>
+            </groups>
+        </suite>
+    </phpunit>
+</config>

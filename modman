@@ -1,0 +1,5 @@
+# EcomDev_PHPUnit definition
+src/app/etc/modules/*.xml                   app/etc/modules/
+src/app/code/community/EcomDev/*            app/code/community/EcomDev/
+src/lib/EcomDev/*                           lib/EcomDev/
+src/shell/*.php                             shell/

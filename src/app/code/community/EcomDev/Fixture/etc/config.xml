@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <EcomDev_Fixture>
+            <version>0.1.0</version>
+        </EcomDev_Fixture>
+    </modules>
+    <global>
+        <models>
+            <ecomdev_fixture>
+                <class>EcomDev_Fixture_Model</class>
+                <resourceModel>ecomdev_fixture_resource</resourceModel>
+            </ecomdev_fixture>
+            <ecomdev_fixture_resource>
+                <class>EcomDev_Fixture_Model_Resource</class>
+            </ecomdev_fixture_resource>
+        </models>
+    </global>
+</config>
