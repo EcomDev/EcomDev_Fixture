@@ -3,6 +3,7 @@
 use EcomDev_Fixture_Db_Schema_Table as Table;
 use EcomDev_Fixture_Db_Schema_Column as Column;
 use EcomDev_Utils_Reflection as ReflectionUtil;
+use EcomDev_PHPUnit_Test_Case_Util as TestUtil;
 
 class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
     extends EcomDev_FixtureTest_Test_AbstractTestCase
@@ -31,8 +32,7 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
             ->disableOriginalConstructor()
             ->getMock();
         
-        $annotations = $this->getAnnotations();
-        $methods = isset($annotations['method']['mockMethod']) ? $annotations['method']['mockMethod'] : array();
+        $methods = TestUtil::getAnnotationByNameFromClass(__CLASS__, 'mockMethod', 'method', $this->getName(false));
         if ($methods) {
             $this->container = $this->getMock(
                 'EcomDev_Fixture_Db_Writer_Container', 

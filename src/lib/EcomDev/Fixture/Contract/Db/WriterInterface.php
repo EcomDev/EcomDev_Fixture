@@ -22,8 +22,17 @@ interface EcomDev_Fixture_Contract_Db_WriterInterface
 
     /**
      * JSON value key, that can be used during schedule operation
+     * 
+     * @var string
      */
     const VALUE_JSON = 'json';
+
+    /**
+     * Default batch size for multi-insert operations
+     * 
+     * @ver int
+     */
+    const DEFAULT_BATCH_SIZE = 500;
     
     /**
      * Constructor with dependencies passed
@@ -105,6 +114,21 @@ interface EcomDev_Fixture_Contract_Db_WriterInterface
      * @return $this
      */
     public function scheduleDelete($table, $condition = array(), $queue = ContainerInterface::QUEUE_PRIMARY);
+
+    /**
+     * Sets batch size for mass operations
+     * 
+     * @param int $batchSize
+     * @return $this
+     */
+    public function setBatchSize($batchSize);
+
+    /**
+     * Retrieves batch size for mass operations
+     *
+     * @return int
+     */
+    public function getBatchSize();
     
     /**
      * Flushes scheduled items into database
@@ -112,6 +136,13 @@ interface EcomDev_Fixture_Contract_Db_WriterInterface
      * @return $this
      */
     public function flush();
+
+    /**
+     * Returns array with statistics of the writer process
+     * 
+     * @return array
+     */
+    public function getStats();
 
     /**
      * Checks if there were any errors during flush operation
