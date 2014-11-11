@@ -697,6 +697,7 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
             'map4' => new EcomDev_Fixture_Db_Map_Static('table1'),
             'map5' => new EcomDev_Fixture_Db_Map_Static('table1'),
             'map6' => new EcomDev_Fixture_Db_Map_Static('table1'),
+            'map7' => new EcomDev_Fixture_Db_Map_Static('table1'),
         );
         
         $maps['map1']->setValue(1);
@@ -981,6 +982,14 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                         'map6' => 5
                     )
                 )
+            ),
+            'no_map_relation' => array(
+                array('resolvedMaps' => array('map7' => 'map7')) + $properties,
+                array(),
+                $schedule,
+                $unresolvedScheduleColumn,
+                $unresolvedScheduleCondition,
+                $unresolvedSchedulePrimaryKey
             ),
             'no_maps_found' => array(
                 array('resolvedMaps' => array()) + $properties,

@@ -289,16 +289,17 @@ class EcomDev_Fixture_Db_Resolver_Container
      */
     public function unresolved($table = null)
     {
+        $result = array();
         if ($table === null) {
-            return array_values($this->mapCache[self::CACHE_UNRESOLVED]);
-        }
-
-        $table = $this->resolveAlias($table);
-        if (isset($this->mapCache[self::CACHE_UNRESOLVED_TABLE][$table])) {
-            return array_values($this->mapCache[self::CACHE_UNRESOLVED_TABLE][$table]);
+            $result = array_values($this->mapCache[self::CACHE_UNRESOLVED]);
+        } else {
+            $table = $this->resolveAlias($table);
+            if (isset($this->mapCache[self::CACHE_UNRESOLVED_TABLE][$table])) {
+                $result = array_values($this->mapCache[self::CACHE_UNRESOLVED_TABLE][$table]);
+            }
         }
         
-        return array();
+        return $result;
     }
 
     /**
@@ -311,16 +312,17 @@ class EcomDev_Fixture_Db_Resolver_Container
      */
     public function all($table = null)
     {
+        $result = array();
         if ($table === null) {
-            return array_values($this->mapCache[self::CACHE_ALL]);
+            $result = array_values($this->mapCache[self::CACHE_ALL]);
+        } else {
+            $table = $this->resolveAlias($table);
+            if (isset($this->mapCache[self::CACHE_ALL_TABLE][$table])) {
+                $result = array_values($this->mapCache[self::CACHE_ALL_TABLE][$table]);
+            }
         }
         
-        $table = $this->resolveAlias($table);        
-        if (isset($this->mapCache[self::CACHE_ALL_TABLE][$table])) {
-            return array_values($this->mapCache[self::CACHE_ALL_TABLE][$table]);
-        }
-        
-        return array();
+        return $result;
     }
 
     /**

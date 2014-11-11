@@ -792,7 +792,7 @@ class EcomDev_Fixture_Db_Writer_Container
      */
     protected function resolveColumnMap($mapId, $value) 
     {
-        if (!isset($this->scheduleColumnMap[$mapId])) {
+        if (empty($this->scheduleColumnMap[$mapId])) {
             return $this;
         }
 
@@ -827,7 +827,7 @@ class EcomDev_Fixture_Db_Writer_Container
      */
     protected function resolveConditionMap($mapId, $value)
     {
-        if (!isset($this->scheduleConditionMap[$mapId])) {
+        if (empty($this->scheduleConditionMap[$mapId])) {
             return $this;
         }
 
