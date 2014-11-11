@@ -14,6 +14,7 @@ Build Status
 * Latest Release: [![Master Branch](https://travis-ci.org/EcomDev/EcomDev_Fixture.png?branch=master)](https://travis-ci.org/EcomDev/EcomDev_Fixture)
 * Development Branch: [![Development Branch](https://travis-ci.org/EcomDev/EcomDev_Fixture.png?branch=develop)](https://travis-ci.org/EcomDev/EcomDev_Fixture)
 * Code Coverage: [![Coverage Status](https://img.shields.io/coveralls/EcomDev/EcomDev_Fixture.svg)](https://coveralls.io/r/EcomDev/EcomDev_Fixture)
+* Code Coverage (Dev): [![Coverage Status](https://coveralls.io/repos/EcomDev/EcomDev_Fixture/badge.png?branch=develop)](https://coveralls.io/r/EcomDev/EcomDev_Fixture?branch=develop)
 
 Installation
 ------------
