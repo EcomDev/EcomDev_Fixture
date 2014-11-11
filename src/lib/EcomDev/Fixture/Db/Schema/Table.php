@@ -216,12 +216,10 @@ class EcomDev_Fixture_Db_Schema_Table
                 }
             }
             
-            if ($primaryKeys) {
-                $this->primaryKeyColumn = (
-                    count($primaryKeys) === 1 ?
-                    current($primaryKeys) :
-                    $primaryKeys
-                );
+            if ($primaryKeys && count($primaryKeys) === 1) {
+                $this->primaryKeyColumn = current($primaryKeys);
+            } elseif ($primaryKeys) {
+                $this->primaryKeyColumn = $primaryKeys;
             }
         }
         

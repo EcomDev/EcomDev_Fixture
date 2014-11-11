@@ -747,7 +747,8 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                         'column3' => $maps['map1']
                     ),
                     'condition' => array(
-                        'column1' => $maps['map2']
+                        'column1' => $maps['map2'],
+                        'column2' => array($maps['map1'], $maps['map2'])
                     )
                 )
             ),
@@ -756,7 +757,8 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                     'column1' => array(
                         0 => $maps['map1'],
                         1 => $maps['map2']
-                    )
+                    ),
+                    'column2' => $maps['map1']
                 )
             )
         );
@@ -812,11 +814,14 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
         $scheduleConditionMap = array(
             'map1' => array(
                 '0/delete/table1/0/column1' => 0,
+                '0/delete/table1/0/column2' => true,
+                '0/update/table1/0/column2' => 0,
                 '0/update/table1/0/column3' => true
             ),
             'map2' => array(
                 '0/update/table1/0/column1' => true,
-                '0/delete/table1/0/column1' => 1
+                '0/delete/table1/0/column1' => 1,
+                '0/update/table1/0/column2' => 1
             )
         );
 
@@ -825,7 +830,11 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                 0 => array(
                     'column1' => array(
                         'map2' => true
-                    ) 
+                    ),
+                    'column2' => array(
+                        'map1' => 0,
+                        'map2' => 1
+                    )
                 )
             ),
             '0/delete/table1' => array(
@@ -833,6 +842,9 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                     'column1' => array(
                         'map1' => 0,
                         'map2' => 1
+                    ),
+                    'column2' => array(
+                        'map1' => true
                     )
                 )
             )
@@ -873,6 +885,14 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                         0
                     ),
                     array(
+                        '0/delete/table1',
+                        0
+                    ),
+                    array(
+                        '0/update/table1',
+                        0
+                    ),
+                    array(
                         '0/insert/table1',
                         2
                     ),
@@ -882,6 +902,10 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                     ),
                     array(
                         '0/delete/table1',
+                        0
+                    ),
+                    array(
+                        '0/update/table1',
                         0
                     ),
                     array(
@@ -912,7 +936,8 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                                 'column3' => 1
                             ),
                             'condition' => array(
-                                'column1' => 2
+                                'column1' => 2,
+                                'column2' => array(1, 2)
                             )
                         )
                     ),
@@ -921,7 +946,8 @@ class EcomDev_FixtureTest_Test_Lib_Db_Writer_ContainerTest
                             'column1' => array(
                                 0 => 1,
                                 1 => 2
-                            )
+                            ),
+                            'column2' => 1
                         )
                     )
                 )),

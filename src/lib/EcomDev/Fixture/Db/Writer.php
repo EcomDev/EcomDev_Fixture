@@ -9,25 +9,14 @@ use EcomDev_Fixture_Contract_Db_MapInterface as MapInterface;
 use EcomDev_Fixture_Contract_Db_Map_StaticInterface as StaticMapInterface;
 use EcomDev_Fixture_Contract_Db_Resolver_MapInterface as ResolvableMapInterface;
 use EcomDev_Fixture_Contract_Db_Writer_ErrorInterface as ErrorInterface;
+use EcomDev_Fixture_Contract_Db_Writer_ContainerInterface as ContainerInterface;
+
 use EcomDev_Fixture_Db_Resolver as Resolver;
+use EcomDev_Fixture_Db_Writer_Container as Container;
 
 class EcomDev_Fixture_Db_Writer 
     implements EcomDev_Fixture_Contract_Db_WriterInterface
-{
-    /**
-     * Type of insert that is going to handle row inserts in batch
-     * 
-     * @var string
-     */
-    const INSERT_TYPE_DEFAULT = 'default';
-    
-    /**
-     * Type of insert, that is going to handle row inserts row by row
-     * 
-     * @var string
-     */
-    const INSERT_TYPE_SINGLE = 'single';
-    
+{    
     /**
      * Database adapter
      *
@@ -50,19 +39,11 @@ class EcomDev_Fixture_Db_Writer
     protected $resolver;
 
     /**
-     * Schedule for a writer
+     * Container object
      * 
-     * @var array
+     * @var ContainerInterface
      */
-    protected $schedule = array();
-
-    /**
-     * Type of insert operations
-     * for tables
-     * 
-     * @var array
-     */
-    protected $insertType = array();
+    protected $container;
     
     /**
      * Constructor with dependencies passed
@@ -71,15 +52,21 @@ class EcomDev_Fixture_Db_Writer
      * @param SchemaInterface $schema
      * @param ResolverInterface $resolver
      */
-    public function __construct(AdapterInterface $adapter, SchemaInterface $schema, ResolverInterface $resolver = null)
+    public function __construct(AdapterInterface $adapter, SchemaInterface $schema, 
+                                ResolverInterface $resolver = null, ContainerInterface $container = null)
     {
         if ($resolver === null) {
             $resolver = new Resolver($adapter, $schema);
         }
         
+        if ($container === null) {
+            $container = new Container($schema, $resolver);
+        }
+        
         $this->adapter = $adapter;
         $this->schema = $schema;
         $this->resolver = $resolver;
+        $this->container = $container;
     }
 
 
@@ -112,139 +99,7 @@ class EcomDev_Fixture_Db_Writer
     {
         return $this->resolver;
     }
-
-    /**
-     * Registers a row in the resolver
-     * 
-     * @param string $table
-     * @param array $row
-     * @return ResolvableMapInterface|bool
-     */
-    public function registerRow($table, $row)
-    {
-        if ($this->getResolver()->canMapRow($table)) {
-            return $this->getResolver()->mapRow($table, $row);
-        }
-        
-        return false;
-    }
-
-    /**
-     * @param TableInterface $table
-     * @param array $row
-     * @return array
-     */
-    public function processRow(TableInterface $table, $row)
-    {
-        $dataRow = array();
-        
-        foreach ($table->getColumns() as $column) {
-            $value = null;
-            if ($column->isPrimary()) {
-                if (!isset($row[$column->getName()]) && !$column->isIdentity()) {
-                    throw new InvalidArgumentException(
-                        sprintf(
-                            'The primary key for "%s" is required, since it is not autoincrement based.',
-                            $table->getName()
-                        )
-                    );
-                } elseif (isset($row[$column->getName()])) {
-                    $value = $row[$column->getName()];
-                }
-            } elseif (isset($row[$column->getName()])) {
-                $value = $row[$column->getName()];
-                
-                if (is_array($value)) {
-                    if (isset($value[self::VALUE_SERIALIZED])) {
-                        $value = serialize($value[self::VALUE_SERIALIZED]);
-                    } elseif (isset($value[self::VALUE_JSON])) {
-                        $value = json_encode($value[self::VALUE_JSON]);
-                    } else {
-                        throw new InvalidArgumentException(
-                            sprintf(
-                                'Invalid value supplied for "%s" in "%s". Supplied value is "%"',
-                                $column->getName(),
-                                $table->getName(),
-                                print_r($value, true)
-                            )
-                        );
-                    }
-                } elseif (!$value instanceof MapInterface) {
-                    $value = $column->getRecommendedValue($value);
-                }
-            } else {
-                $value = $column->getRecommendedValue(null);
-            }
-            
-            $dataRow[$column->getName()] = $value;
-        }
-        
-        return $dataRow;
-    }
-
-    /**
-     * Returns a column value prepared for a database insert
-     * 
-     * @param TableInterface $table
-     * @param ColumnInterface $column
-     * @param mixed $value
-     * @return string|MapInterface|null
-     */
-    protected function prepareColumnValue(TableInterface $table, ColumnInterface $column, $value)
-    {
-        if (is_array($value)) {
-            if (isset($value[self::VALUE_SERIALIZED])) {
-                $value = serialize($value[self::VALUE_SERIALIZED]);
-            } elseif (isset($value[self::VALUE_JSON])) {
-                $value = json_encode($value[self::VALUE_JSON]);
-            } else {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Invalid value supplied for "%s" in "%s". Supplied value is "%"',
-                        $column->getName(),
-                        $table->getName(),
-                        print_r($value, true)
-                    )
-                );
-            }
-        } elseif (!$value instanceof MapInterface) {
-            $value = $column->getRecommendedValue($value);
-        }
-        
-        return $value;
-    }
     
-    public function detectInsertType(TableInterface $table, $row)
-    {
-        if (!isset($this->insertType[$table->getName()])) {
-            $this->insertType[$table->getName()] = self::INSERT_TYPE_DEFAULT;
-        }
-        
-        $primaryKeyColumn = $table->getPrimaryKeyColumn();
-        
-        if ($primaryKeyColumn instanceof ColumnInterface 
-            && isset($row[$primaryKeyColumn->getName()]) 
-            && $row[$primaryKeyColumn->getName()] instanceof StaticMapInterface) {
-            $this->insertType[$table->getName()] = self::INSERT_TYPE_SINGLE;
-        }
-    }
-
-    /**
-     * Schedules an insert into the table
-     *
-     * This method should handle duplicated entries with existing database records
-     *
-     * @param string $table
-     * @param array $row
-     * @return $this
-     */
-    public function schedule($table, array $row)
-    {
-        
-    }
-    
-    
-
     /**
      * Flushes scheduled items into database
      *
@@ -273,5 +128,70 @@ class EcomDev_Fixture_Db_Writer
     public function getErrors()
     {
         // TODO: Implement getErrors() method.
+    }
+
+    /**
+     * Returns container
+     *
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Sets container instance for a writer
+     *
+     * @param ContainerInterface $container
+     * @return $this
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
+    /**
+     * Schedules an insert operation
+     *
+     * @param string $table
+     * @param array $data
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleInsert($table, $data, $queue = ContainerInterface::QUEUE_PRIMARY)
+    {
+        $this->container->scheduleInsert($table, $data, $queue);
+        return $this;
+    }
+
+    /**
+     * Schedules an update operation
+     *
+     * @param $table
+     * @param array $data
+     * @param array $condition
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleUpdate($table, $data, $condition = array(), $queue = ContainerInterface::QUEUE_PRIMARY)
+    {
+        $this->container->scheduleUpdate($table, $data, $condition, $queue);
+        return $this;
+    }
+
+    /**
+     * Schedules a delete operation
+     *
+     * @param string $table
+     * @param array $condition
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleDelete($table, $condition = array(), $queue = ContainerInterface::QUEUE_PRIMARY)
+    {
+        $this->container->scheduleDelete($table, $condition, $queue);
+        return $this;
     }
 }

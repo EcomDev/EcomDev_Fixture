@@ -353,6 +353,9 @@ class EcomDev_FixtureTest_Test_Lib_Db_Schema_ColumnTest
             'decimal_not_nullable_empty_string' => array(
                 Column::TYPE_DECIMAL, '', '0.0000', 0, null, 10, 4
             ),
+            'decimal_nullable_empty_string' => array(
+                Column::TYPE_DECIMAL, '', null, Column::OPTION_NULLABLE, null, 10, 4
+            ),            
             'datetype_as_string' => array( // Should not modify date if it is passed as string
                 Column::TYPE_DATE, '2013-01-01 Something', '2013-01-01 Something'
             ),

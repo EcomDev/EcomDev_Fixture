@@ -251,6 +251,11 @@ class EcomDev_FixtureTest_Test_Lib_Db_Resolver_ContainerTest
         $this->assertSame($expectedResult, $this->container->all());
     }
 
+    public function testItReturnsEmptyArrayIfNoItemsAdded()
+    {
+        $this->assertSame(array(), $this->container->all());
+    }
+
     public function testItReturnsUnresolvedItemsByTable()
     {
         $expectedResult = array();

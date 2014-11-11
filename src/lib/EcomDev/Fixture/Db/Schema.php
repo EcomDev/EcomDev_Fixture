@@ -395,12 +395,6 @@ class EcomDev_Fixture_Db_Schema
         
         return $result;
     }
-    
-    public function __sleep()
-    {
-        $this->fetch();
-        $this->informationProvider = null;
-    }
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>

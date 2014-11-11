@@ -5,6 +5,7 @@ use Varien_Db_Adapter_Interface as AdapterInterface;
 use EcomDev_Fixture_Contract_Db_ResolverInterface as ResolverInterface;
 use EcomDev_Fixture_Contract_Db_MapInterface as MapInterface;
 use EcomDev_Fixture_Contract_Db_Writer_ErrorInterface as ErrorInterface;
+use EcomDev_Fixture_Contract_Db_Writer_ContainerInterface as ContainerInterface;
 
 /**
  * Writer interface for fixture write operations
@@ -34,7 +35,8 @@ interface EcomDev_Fixture_Contract_Db_WriterInterface
     public function __construct(
         AdapterInterface $adapter, 
         SchemaInterface $schema, 
-        ResolverInterface $resolver = null
+        ResolverInterface $resolver = null,
+        ContainerInterface $container = null
     );
 
     /**
@@ -59,15 +61,50 @@ interface EcomDev_Fixture_Contract_Db_WriterInterface
     public function getResolver();
 
     /**
-     * Schedules an insert into the table
+     * Returns container
      * 
-     * This method should handle duplicated entries with existing database records 
+     * @return ContainerInterface
+     */
+    public function getContainer();
+
+    /**
+     * Sets container instance for a writer
      * 
-     * @param string $table
-     * @param array $row
+     * @param ContainerInterface $container
      * @return $this
      */
-    public function schedule($table, array $row);
+    public function setContainer(ContainerInterface $container);
+    
+    /**
+     * Schedules an insert operation
+     *
+     * @param string $table
+     * @param array $data
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleInsert($table, $data, $queue = ContainerInterface::QUEUE_PRIMARY);
+
+    /**
+     * Schedules an update operation
+     *
+     * @param $table
+     * @param array $data
+     * @param array $condition
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleUpdate($table, $data, $condition = array(), $queue = ContainerInterface::QUEUE_PRIMARY);
+
+    /**
+     * Schedules a delete operation
+     *
+     * @param string $table
+     * @param array $condition
+     * @param int $queue
+     * @return $this
+     */
+    public function scheduleDelete($table, $condition = array(), $queue = ContainerInterface::QUEUE_PRIMARY);
     
     /**
      * Flushes scheduled items into database

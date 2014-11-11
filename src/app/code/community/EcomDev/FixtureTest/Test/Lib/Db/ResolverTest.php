@@ -276,7 +276,7 @@ class EcomDev_FixtureTest_Test_Lib_Db_ResolverTest
         $this->assertObjectHasAttribute('notifiers', $resolver);
         $this->assertAttributeInstanceOf('EcomDev_Fixture_Utility_Notifier_Container', 'notifiers', $resolver);
     }
-
+    
     public function testItIsProxiesCallsToNotifier()
     {
         $resolver = new Resolver($this->adapterMock, $this->schemaMock);
